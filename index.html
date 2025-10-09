@@ -1,193 +1,296 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celenganku</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" href="findev1.png">
-    <style>
-        body {
-            background: #f8fafc;
-            font-family: 'Poppins', sans-serif;
-        }
-        .card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
-        h1 {
-            color: #198754;
-            font-weight: 700;
-        }
-        .table thead {
-            background-color: #198754;
-            color: white;
-        }
-        .btn-success {
-            background-color: #198754;
-            border: none;
-        }
-        .btn-success:hover {
-            background-color: #157347;
-        }
-        .btn-outline-success {
-            border-color: #198754;
-            color: #198754;
-        }
-        .btn-outline-success:hover {
-            background-color: #198754;
-            color: white;
-        }
-        .alert {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        @media (max-width: 576px) {
-            h1 {
-                font-size: 1.6rem;
-            }
-            .alert {
-                font-size: 1rem;
-                padding: 0.5rem;
-            }
-            .table {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Celenganku</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="findev1.png">
+  <style>
+    body {
+      background: #f4f6f8;
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      max-width: 700px;
+    }
+    .card {
+      border: none;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      color: #198754;
+      font-weight: 700;
+    }
+    .alert {
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 12px;
+    }
+    .btn-success {
+      background-color: #198754;
+      border: none;
+    }
+    .btn-success:hover {
+      background-color: #157347;
+    }
+    .btn-outline-success {
+      border-color: #198754;
+      color: #198754;
+    }
+    .btn-outline-success:hover {
+      background-color: #198754;
+      color: white;
+    }
+
+    /* ===== RESPONSIVE CARD TABLE ===== */
+    .table-responsive {
+      display: none;
+    }
+    .table-mobile {
+      display: grid;
+      gap: 12px;
+    }
+    .card-item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+      padding: 12px 16px;
+      transition: 0.2s;
+    }
+    .card-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    .card-item h5 {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 6px;
+    }
+    .card-item small {
+      color: #777;
+    }
+    .card-item .jumlah {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #198754;
+    }
+    .card-item .btn {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    @media (min-width: 768px) {
+      .table-responsive { display: block; }
+      .table-mobile { display: none; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container mt-4 mb-5">
-        <h1 class="text-center mb-3">💰 Celenganku</h1>
 
-        <div class="alert alert-success text-center" id="totalTabungan">
-            Total Tabungan: <strong>Rp 0</strong>
-        </div>
+<div class="container mt-4 mb-5">
+  <h1 class="text-center mb-3">💰 Celenganku</h1>
 
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-3">
-            <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#tambahModal">+ Tambah Tabungan</button>
-            <button class="btn btn-outline-success w-100 w-sm-auto" id="resetData">🧹 Reset Data</button>
-        </div>
+  <div class="alert alert-success text-center" id="totalTabungan">
+    Total Tabungan: <strong>Rp 0</strong>
+  </div>
 
-        <!-- Modal Tambah Data -->
-        <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <form id="formTambah">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tambahModalLabel">Tambah Tabungan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="tanggal" class="form-label">Tanggal</label>
-                        <input type="date" id="tanggal" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="keterangan" class="form-label">Keterangan</label>
-                        <input type="text" id="keterangan" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jumlah" class="form-label">Jumlah (Rp)</label>
-                        <input type="number" id="jumlah" class="form-control" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-3">
+    <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#tambahModal">+ Tambah Tabungan</button>
+    <button class="btn btn-outline-success w-100 w-sm-auto" id="resetData">🧹 Reset Data</button>
+  </div>
+
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formTambah">
+          <div class="modal-header">
+            <h5 class="modal-title">Tambah Tabungan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="tanggal" class="form-label">Tanggal</label>
+              <input type="date" id="tanggal" class="form-control" required>
             </div>
-        </div>
-        </div>
-
-        <!-- Tabel -->
-        <div class="card mt-3">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover align-middle text-center" id="tabelTabungan">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>Keterangan</th>
-                                <th>Jumlah (Rp)</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dataBody"></tbody>
-                    </table>
-                </div>
+            <div class="mb-3">
+              <label for="keterangan" class="form-label">Keterangan</label>
+              <input type="text" id="keterangan" class="form-control" required>
             </div>
-        </div>
+            <div class="mb-3">
+              <label for="jumlah" class="form-label">Jumlah (Rp)</label>
+              <input type="number" id="jumlah" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Simpan</button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    let dataTabungan = JSON.parse(localStorage.getItem('tabungan')) || [];
+  <!-- Modal Edit -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formEdit">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Tabungan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editId">
+            <div class="mb-3">
+              <label for="editTanggal" class="form-label">Tanggal</label>
+              <input type="date" id="editTanggal" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editKeterangan" class="form-label">Keterangan</label>
+              <input type="text" id="editKeterangan" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="editJumlah" class="form-label">Jumlah (Rp)</label>
+              <input type="number" id="editJumlah" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-    function simpanData() {
-        localStorage.setItem('tabungan', JSON.stringify(dataTabungan));
-    }
+  <!-- Table View (Desktop) -->
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center align-middle">
+          <thead class="table-success">
+            <tr>
+              <th>No</th>
+              <th>Tanggal</th>
+              <th>Keterangan</th>
+              <th>Jumlah (Rp)</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
 
-    function tampilkanData() {
-        const tbody = document.getElementById('dataBody');
-        tbody.innerHTML = '';
-        let total = 0;
+      <!-- Card View (Mobile) -->
+      <div class="table-mobile" id="dataMobile"></div>
+    </div>
+  </div>
+</div>
 
-        dataTabungan.forEach((item, index) => {
-            total += parseInt(item.jumlah);
-            tbody.innerHTML += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.tanggal}</td>
-                    <td>${item.keterangan}</td>
-                    <td>${parseInt(item.jumlah).toLocaleString('id-ID')}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
-                    </td>
-                </tr>
-            `;
-        });
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+let dataTabungan = JSON.parse(localStorage.getItem('tabungan')) || [];
 
-        document.getElementById('totalTabungan').innerHTML = `Total Tabungan: <strong>Rp ${total.toLocaleString('id-ID')}</strong>`;
-    }
+function simpanData() {
+  localStorage.setItem('tabungan', JSON.stringify(dataTabungan));
+}
 
-    document.getElementById('formTambah').addEventListener('submit', function(e) {
-        e.preventDefault();
+function tampilkanData() {
+  const tbody = document.getElementById('dataBody');
+  const mobileView = document.getElementById('dataMobile');
+  tbody.innerHTML = '';
+  mobileView.innerHTML = '';
+  let total = 0;
 
-        const tanggal = document.getElementById('tanggal').value;
-        const keterangan = document.getElementById('keterangan').value;
-        const jumlah = document.getElementById('jumlah').value;
+  dataTabungan.forEach((item, index) => {
+    total += parseInt(item.jumlah);
 
-        const id = Date.now(); // unik
-        dataTabungan.push({ id, tanggal, keterangan, jumlah });
+    // Desktop table
+    tbody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${item.tanggal}</td>
+        <td>${item.keterangan}</td>
+        <td>${parseInt(item.jumlah).toLocaleString('id-ID')}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" onclick="editData(${item.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
+        </td>
+      </tr>`;
 
-        simpanData();
-        tampilkanData();
-        e.target.reset();
+    // Mobile cards
+    mobileView.innerHTML += `
+      <div class="card-item">
+        <h5>${item.keterangan}</h5>
+        <small>${item.tanggal}</small>
+        <div class="jumlah mt-1">Rp ${parseInt(item.jumlah).toLocaleString('id-ID')}</div>
+        <div class="mt-2">
+          <button class="btn btn-warning btn-sm me-2" onclick="editData(${item.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
+        </div>
+      </div>`;
+  });
 
-        const modal = bootstrap.Modal.getInstance(document.getElementById('tambahModal'));
-        modal.hide();
-    });
+  document.getElementById('totalTabungan').innerHTML =
+    `Total Tabungan: <strong>Rp ${total.toLocaleString('id-ID')}</strong>`;
+}
 
-    function hapusData(index) {
-        if (confirm('Yakin ingin menghapus data ini?')) {
-            dataTabungan.splice(index, 1);
-            simpanData();
-            tampilkanData();
-        }
-    }
+document.getElementById('formTambah').addEventListener('submit', e => {
+  e.preventDefault();
+  const tanggal = document.getElementById('tanggal').value;
+  const keterangan = document.getElementById('keterangan').value;
+  const jumlah = document.getElementById('jumlah').value;
+  const id = Date.now();
+  dataTabungan.push({ id, tanggal, keterangan, jumlah });
+  simpanData();
+  tampilkanData();
+  e.target.reset();
+  bootstrap.Modal.getInstance(document.getElementById('tambahModal')).hide();
+});
 
-    document.getElementById('resetData').addEventListener('click', () => {
-        if (confirm('Yakin ingin menghapus semua data tabungan?')) {
-            localStorage.removeItem('tabungan');
-            dataTabungan = [];
-            tampilkanData();
-        }
-    });
-
+function hapusData(index) {
+  if (confirm('Yakin ingin menghapus data ini?')) {
+    dataTabungan.splice(index, 1);
+    simpanData();
     tampilkanData();
-    </script>
+  }
+}
+
+function editData(id) {
+  const data = dataTabungan.find(d => d.id === id);
+  if (!data) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('editTanggal').value = data.tanggal;
+  document.getElementById('editKeterangan').value = data.keterangan;
+  document.getElementById('editJumlah').value = data.jumlah;
+  new bootstrap.Modal(document.getElementById('editModal')).show();
+}
+
+document.getElementById('formEdit').addEventListener('submit', e => {
+  e.preventDefault();
+  const id = parseInt(document.getElementById('editId').value);
+  const tanggal = document.getElementById('editTanggal').value;
+  const keterangan = document.getElementById('editKeterangan').value;
+  const jumlah = document.getElementById('editJumlah').value;
+  const index = dataTabungan.findIndex(d => d.id === id);
+  if (index !== -1) {
+    dataTabungan[index] = { id, tanggal, keterangan, jumlah };
+    simpanData();
+    tampilkanData();
+  }
+  bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+});
+
+document.getElementById('resetData').addEventListener('click', () => {
+  if (confirm('Yakin ingin menghapus semua data tabungan?')) {
+    localStorage.removeItem('tabungan');
+    dataTabungan = [];
+    tampilkanData();
+  }
+});
+
+tampilkanData();
+</script>
 </body>
 </html>
