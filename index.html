@@ -3,294 +3,233 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celenganku</title>
+  <title>Celenganku - Multi Aset</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="icon" href="findev1.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #f4f6f8;
-      font-family: 'Poppins', sans-serif;
+    body { background: #f0f2f5; font-family: 'Poppins', sans-serif; }
+    .container { max-width: 900px; }
+    
+    /* Navigasi Tab */
+    .nav-pills .nav-link { border-radius: 12px; color: #666; font-weight: 600; padding: 10px 20px; }
+    .nav-pills .nav-link.active { background-color: #198754; color: white; }
+    
+    .saldo-card { 
+      background: linear-gradient(45deg, #198754, #28a745); 
+      color: white; border: none; border-radius: 20px; padding: 25px; margin-bottom: 25px;
     }
-    .container {
-      max-width: 700px;
-    }
-    .card {
-      border: none;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
-    h1 {
-      color: #198754;
-      font-weight: 700;
-    }
-    .alert {
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 12px;
-    }
-    .btn-success {
-      background-color: #198754;
-      border: none;
-    }
-    .btn-success:hover {
-      background-color: #157347;
-    }
-    .btn-outline-success {
-      border-color: #198754;
-      color: #198754;
-    }
-    .btn-outline-success:hover {
-      background-color: #198754;
-      color: white;
-    }
+    .card-aset { border: none; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .badge-emas { background-color: #ffc107; color: #000; }
+    .badge-investasi { background-color: #0d6efd; color: #fff; }
+    .badge-tunai { background-color: #198754; color: #fff; }
 
-    /* ===== RESPONSIVE CARD TABLE ===== */
-    .table-responsive {
-      display: none;
-    }
-    .table-mobile {
-      display: grid;
-      gap: 12px;
-    }
-    .card-item {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-      padding: 12px 16px;
-      transition: 0.2s;
-    }
-    .card-item:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-    .card-item h5 {
-      font-size: 1rem;
-      color: #333;
-      margin-bottom: 6px;
-    }
-    .card-item small {
-      color: #777;
-    }
-    .card-item .jumlah {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #198754;
-    }
-    .card-item .btn {
-      padding: 0.25rem 0.75rem;
-      font-size: 0.85rem;
-    }
-
-    @media (min-width: 768px) {
-      .table-responsive { display: block; }
-      .table-mobile { display: none; }
+    .table-mobile { display: none; gap: 15px; }
+    @media (max-width: 767px) {
+      .table-responsive { display: none; }
+      .table-mobile { display: grid; }
     }
   </style>
 </head>
 <body>
 
-<div class="container mt-4 mb-5">
-  <h1 class="text-center mb-3">💰 Celenganku</h1>
-
-  <div class="alert alert-success text-center" id="totalTabungan">
-    Total Tabungan: <strong>Rp 0</strong>
+<div class="container mb-5">
+  <div class="text-center mb-4">
+    <h1>💰 Celenganku <span class="fs-5 text-muted">Pro</span></h1>
   </div>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-3">
-    <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#tambahModal">+ Tambah Tabungan</button>
-    <button class="btn btn-outline-success w-100 w-sm-auto" id="resetData">🧹 Reset Data</button>
+  <div class="saldo-card text-center shadow">
+    <small class="opacity-75 text-uppercase fw-bold">Total Kekayaan (Net Worth)</small>
+    <h2 class="display-5 fw-bold mb-1" id="totalSemuaAset">Rp 0</h2>
+    <p class="mb-0 mt-2 small opacity-75" id="infoDetailAset"></p>
   </div>
 
-  <!-- Modal Tambah -->
-  <div class="modal fade" id="tambahModal" tabindex="-1" aria-labelledby="tambahModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="formTambah">
-          <div class="modal-header">
-            <h5 class="modal-title">Tambah Tabungan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="tanggal" class="form-label">Tanggal</label>
-              <input type="date" id="tanggal" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="keterangan" class="form-label">Keterangan</label>
-              <input type="text" id="keterangan" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="jumlah" class="form-label">Jumlah (Rp)</label>
-              <input type="number" id="jumlah" class="form-control" required>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Simpan</button>
-          </div>
-        </form>
+  <ul class="nav nav-pills nav-fill mb-4 bg-white p-2 rounded-4 shadow-sm" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" onclick="gantiKategori('Tunai')">💵 Tunai</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" onclick="gantiKategori('Emas')">✨ Emas</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" onclick="gantiKategori('Investasi')">📈 Investasi</button>
+    </li>
+  </ul>
+
+  <div class="bg-white p-3 rounded-4 shadow-sm mb-4">
+    <div class="row g-2 align-items-end">
+      <div class="col-6 col-md-3">
+        <label class="form-label small fw-bold">Bulan</label>
+        <select id="filterBulan" class="form-select" onchange="renderTampilan()"></select>
+      </div>
+      <div class="col-6 col-md-3">
+        <label class="form-label small fw-bold">Tahun</label>
+        <select id="filterTahun" class="form-select" onchange="renderTampilan()"></select>
+      </div>
+      <div class="col-12 col-md-6 d-flex gap-2 justify-content-md-end">
+        <button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#modalAset">+ Catat <span id="labelTombol">Tunai</span></button>
+        <button class="btn btn-outline-danger" id="resetData">Reset</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Edit -->
-  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <form id="formEdit">
-          <div class="modal-header">
-            <h5 class="modal-title">Edit Tabungan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="editId">
-            <div class="mb-3">
-              <label for="editTanggal" class="form-label">Tanggal</label>
-              <input type="date" id="editTanggal" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="editKeterangan" class="form-label">Keterangan</label>
-              <input type="text" id="editKeterangan" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="editJumlah" class="form-label">Jumlah (Rp)</label>
-              <input type="number" id="editJumlah" class="form-control" required>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Simpan Perubahan</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Table View (Desktop) -->
-  <div class="card mt-3">
-    <div class="card-body">
+  <div class="card card-aset">
+    <div class="card-body p-4">
+      <h5 class="fw-bold mb-3">Riwayat <span id="labelJudul">Tunai</span></h5>
+      <div id="emptyState" class="text-center py-5 d-none text-muted">Belum ada catatan di kategori ini.</div>
       <div class="table-responsive">
-        <table class="table table-bordered table-hover text-center align-middle">
-          <thead class="table-success">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
             <tr>
               <th>No</th>
               <th>Tanggal</th>
               <th>Keterangan</th>
-              <th>Jumlah (Rp)</th>
-              <th>Aksi</th>
+              <th>Nilai (Rp)</th>
+              <th class="text-center">Aksi</th>
             </tr>
           </thead>
           <tbody id="dataBody"></tbody>
         </table>
       </div>
-
-      <!-- Card View (Mobile) -->
       <div class="table-mobile" id="dataMobile"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalAset" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 20px;">
+      <form id="formAset">
+        <div class="modal-header border-0"><h5 class="modal-title fw-bold w-100 text-center">Tambah <span id="labelModal">Tunai</span></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" id="tanggal" class="form-control" required></div>
+          <div class="mb-3"><label class="form-label">Nama Aset / Keterangan</label><input type="text" id="keterangan" class="form-control" placeholder="Misal: Logam Mulia 5gr / Saham BBCA" required></div>
+          <div class="mb-3"><label class="form-label">Nilai Rupiah (Estimasi)</label><input type="number" id="jumlah" class="form-control" placeholder="0" required></div>
+        </div>
+        <div class="modal-footer border-0"><button type="submit" class="btn btn-success w-100">Simpan Catatan</button></div>
+      </form>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let dataTabungan = JSON.parse(localStorage.getItem('tabungan')) || [];
+  let dataAset = JSON.parse(localStorage.getItem('dataAset')) || [];
+  let kategoriAktif = 'Tunai';
 
-function simpanData() {
-  localStorage.setItem('tabungan', JSON.stringify(dataTabungan));
-}
+  const bulanIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-function tampilkanData() {
-  const tbody = document.getElementById('dataBody');
-  const mobileView = document.getElementById('dataMobile');
-  tbody.innerHTML = '';
-  mobileView.innerHTML = '';
-  let total = 0;
+  function gantiKategori(kat) {
+    kategoriAktif = kat;
+    // Update UI Navigasi
+    document.querySelectorAll('.nav-link').forEach(btn => {
+      btn.classList.remove('active');
+      if(btn.innerText.includes(kat)) btn.classList.add('active');
+    });
+    // Update Label
+    document.getElementById('labelTombol').innerText = kat;
+    document.getElementById('labelJudul').innerText = kat;
+    document.getElementById('labelModal').innerText = kat;
+    renderTampilan();
+  }
 
-  dataTabungan.forEach((item, index) => {
-    total += parseInt(item.jumlah);
+  function renderTampilan() {
+    const tbody = document.getElementById('dataBody');
+    const mobileView = document.getElementById('dataMobile');
+    const emptyState = document.getElementById('emptyState');
+    const fBlan = document.getElementById('filterBulan').value;
+    const fThun = document.getElementById('filterTahun').value;
 
-    // Desktop table
-    tbody.innerHTML += `
-      <tr>
-        <td>${index + 1}</td>
-        <td>${item.tanggal}</td>
-        <td>${item.keterangan}</td>
-        <td>${parseInt(item.jumlah).toLocaleString('id-ID')}</td>
-        <td>
-          <button class="btn btn-warning btn-sm" onclick="editData(${item.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
-        </td>
-      </tr>`;
+    tbody.innerHTML = ''; mobileView.innerHTML = '';
 
-    // Mobile cards
-    mobileView.innerHTML += `
-      <div class="card-item">
-        <h5>${item.keterangan}</h5>
-        <small>${item.tanggal}</small>
-        <div class="jumlah mt-1">Rp ${parseInt(item.jumlah).toLocaleString('id-ID')}</div>
-        <div class="mt-2">
-          <button class="btn btn-warning btn-sm me-2" onclick="editData(${item.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
-        </div>
-      </div>`;
+    // 1. Hitung Net Worth (Seluruh Kategori, Seluruh Waktu)
+    let totalTunai = 0, totalEmas = 0, totalInvest = 0;
+    dataAset.forEach(item => {
+      if(item.kategori === 'Tunai') totalTunai += parseInt(item.jumlah);
+      if(item.kategori === 'Emas') totalEmas += parseInt(item.jumlah);
+      if(item.kategori === 'Investasi') totalInvest += parseInt(item.jumlah);
+    });
+    const netWorth = totalTunai + totalEmas + totalInvest;
+    document.getElementById('totalSemuaAset').innerText = `Rp ${netWorth.toLocaleString('id-ID')}`;
+    document.getElementById('infoDetailAset').innerText = `Tunai: Rp ${totalTunai.toLocaleString('id-ID')} | Emas: Rp ${totalEmas.toLocaleString('id-ID')} | Invest: Rp ${totalInvest.toLocaleString('id-ID')}`;
+
+    // 2. Filter data untuk Tabel (Hanya kategori aktif + filter waktu)
+    let filtered = dataAset.filter(item => {
+      const d = new Date(item.tanggal);
+      const cKat = item.kategori === kategoriAktif;
+      const cBlan = fBlan === 'all' || d.getMonth().toString() === fBlan;
+      const cThun = fThun === 'all' || d.getFullYear().toString() === fThun;
+      return cKat && cBlan && cThun;
+    });
+
+    filtered.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+
+    if(filtered.length === 0) {
+      emptyState.classList.remove('d-none');
+    } else {
+      emptyState.classList.add('d-none');
+      filtered.forEach((item, idx) => {
+        const row = `<tr>
+          <td>${idx+1}</td>
+          <td>${item.tanggal}</td>
+          <td>${item.keterangan}</td>
+          <td class="fw-bold">Rp ${parseInt(item.jumlah).toLocaleString('id-ID')}</td>
+          <td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="hapusData(${item.id})">Hapus</button></td>
+        </tr>`;
+        tbody.innerHTML += row;
+        
+        mobileView.innerHTML += `<div class="bg-white p-3 rounded-3 shadow-sm border-start border-4 border-success">
+          <div class="d-flex justify-content-between"><b>${item.keterangan}</b> <small>${item.tanggal}</small></div>
+          <div class="text-success fw-bold">Rp ${parseInt(item.jumlah).toLocaleString('id-ID')}</div>
+          <button class="btn btn-sm btn-link text-danger p-0 mt-2" onclick="hapusData(${item.id})">Hapus</button>
+        </div>`;
+      });
+    }
+  }
+
+  document.getElementById('formAset').addEventListener('submit', e => {
+    e.preventDefault();
+    dataAset.push({
+      id: Date.now(),
+      kategori: kategoriAktif,
+      tanggal: document.getElementById('tanggal').value,
+      keterangan: document.getElementById('keterangan').value,
+      jumlah: document.getElementById('jumlah').value
+    });
+    localStorage.setItem('dataAset', JSON.stringify(dataAset));
+    renderTampilan();
+    e.target.reset();
+    bootstrap.Modal.getInstance(document.getElementById('modalAset')).hide();
   });
 
-  document.getElementById('totalTabungan').innerHTML =
-    `Total Tabungan: <strong>Rp ${total.toLocaleString('id-ID')}</strong>`;
-}
-
-document.getElementById('formTambah').addEventListener('submit', e => {
-  e.preventDefault();
-  const tanggal = document.getElementById('tanggal').value;
-  const keterangan = document.getElementById('keterangan').value;
-  const jumlah = document.getElementById('jumlah').value;
-  const id = Date.now();
-  dataTabungan.push({ id, tanggal, keterangan, jumlah });
-  simpanData();
-  tampilkanData();
-  e.target.reset();
-  bootstrap.Modal.getInstance(document.getElementById('tambahModal')).hide();
-});
-
-function hapusData(index) {
-  if (confirm('Yakin ingin menghapus data ini?')) {
-    dataTabungan.splice(index, 1);
-    simpanData();
-    tampilkanData();
+  function hapusData(id) {
+    if(confirm('Hapus data ini?')) {
+      dataAset = dataAset.filter(i => i.id !== id);
+      localStorage.setItem('dataAset', JSON.stringify(dataAset));
+      renderTampilan();
+    }
   }
-}
 
-function editData(id) {
-  const data = dataTabungan.find(d => d.id === id);
-  if (!data) return;
-  document.getElementById('editId').value = id;
-  document.getElementById('editTanggal').value = data.tanggal;
-  document.getElementById('editKeterangan').value = data.keterangan;
-  document.getElementById('editJumlah').value = data.jumlah;
-  new bootstrap.Modal(document.getElementById('editModal')).show();
-}
+  function init() {
+    // Fill Filter Bulan
+    const fb = document.getElementById('filterBulan');
+    fb.innerHTML = '<option value="all">Semua Bulan</option>';
+    bulanIndo.forEach((b, i) => fb.innerHTML += `<option value="${i}">${b}</option>`);
 
-document.getElementById('formEdit').addEventListener('submit', e => {
-  e.preventDefault();
-  const id = parseInt(document.getElementById('editId').value);
-  const tanggal = document.getElementById('editTanggal').value;
-  const keterangan = document.getElementById('editKeterangan').value;
-  const jumlah = document.getElementById('editJumlah').value;
-  const index = dataTabungan.findIndex(d => d.id === id);
-  if (index !== -1) {
-    dataTabungan[index] = { id, tanggal, keterangan, jumlah };
-    simpanData();
-    tampilkanData();
+    // Fill Filter Tahun
+    const ft = document.getElementById('filterTahun');
+    ft.innerHTML = '<option value="all">Semua Tahun</option>';
+    for(let i=2025; i<=2035; i++) ft.innerHTML += `<option value="${i}">${i}</option>`;
+
+    // Set Default Now
+    const n = new Date();
+    fb.value = n.getMonth();
+    ft.value = n.getFullYear();
+    document.getElementById('tanggal').valueAsDate = n;
+
+    renderTampilan();
   }
-  bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-});
 
-document.getElementById('resetData').addEventListener('click', () => {
-  if (confirm('Yakin ingin menghapus semua data tabungan?')) {
-    localStorage.removeItem('tabungan');
-    dataTabungan = [];
-    tampilkanData();
-  }
-});
-
-tampilkanData();
+  init();
 </script>
 </body>
 </html>
